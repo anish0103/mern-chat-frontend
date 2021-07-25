@@ -1,0 +1,89 @@
+.chatcontainer-maincontainer {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 93vh;
+}
+
+.chatcontainer-nameuser {
+    height: 5%;
+    padding: 12px;
+    display: flex;
+    align-items: center;
+    border: 1px solid black;
+}
+
+.chatcontainer-chatarea {
+    height: 90%;
+    padding: 12px;
+    border: 1px solid black;
+    overflow-y: scroll;
+}
+
+.chatcontainer-message {
+    height: 5%;
+    padding: 12px;
+    border: 1px solid black;
+    /* width: 97%; */
+    display: flex;
+    align-items: center;
+    background-color: cadetblue;
+}
+
+.chatcontainer-chatarea ul {
+    width: 100%;
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+}
+
+.chatcontainer-chatarea li {
+    width: fit-content;
+   background-color: cadetblue;
+   padding: 8px;
+   margin: 5px;
+   border-radius: 5px;
+}
+
+.sendmessage-container {
+    width: 90%;
+    display: flex;
+    justify-content: center;
+}
+
+.sendmessage-container input {
+    width: 90%;
+    padding: 12px;
+    outline: none;
+    border: none;
+    border-radius: 20px;
+    font-size: 15px;
+}
+
+.sendbutton-container {
+    width: 10%;
+    display: flex;
+    justify-content: center;
+}
+
+.sendbutton-container button {
+    font-size: 15px;
+    border-radius: 20px;
+    padding: 12px;
+    width: 80%;
+    outline: none;
+    border: none;
+    cursor: pointer;
+}
+
+.sender {
+    float: right;
+}
+
+.receiver {
+    float: left;
+}
+
+.msgcontainer {
+    width: 100%;
+}
