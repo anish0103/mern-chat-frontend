@@ -14,7 +14,7 @@ function UserList(Probs) {
                 <button>Add +</button>
             </div>
             <div className='userlist-list'>
-                    {FriendList.map((data) => (<NavLink to={{pathname: `/${data.id}` , data: data}} key={data.id}>{data.Name}</NavLink> ))}
+                    {FriendList.map((data) => (<NavLink to={{pathname: `/home/${data.id}` , data: data}} activeClassName='active' key={data.id}>{data.Name}</NavLink> ))}
             </div>
         </div>
     )

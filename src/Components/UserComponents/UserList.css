@@ -8,7 +8,7 @@
 
 .userlist-chattext {
     height: 8%;
-    background-color: brown;
+    background-color: #f7fbfc;
     padding: 12px;
     display: flex;
     align-items: center;
@@ -23,6 +23,8 @@
     padding: 6px;
     border: none;
     border-radius: 6px;
+    background-image: linear-gradient(90deg ,#714eef, #c466ff);
+    color: white;
     cursor: pointer;
     font-weight: bold;
     transition-duration: 0.5s;
@@ -34,7 +36,7 @@
 
 .userlist-list {
     height: 90%;
-    background-color: yellow;
+    background-color: #f7fbfc;
     padding: 12px;
     display: flex;
     /* overflow-y: scroll; */
@@ -45,14 +47,23 @@
 .userlist-list a {
     text-decoration: none;
     color: black;
+    font-weight: bold;
     padding: 10px;
     margin: 8px;
-    width: 90%;
+    width: 85%;
     border-radius: 5px;
-    background-color: grey;
-    transition-duration: 0.4s;
+    background-color: #feffff;
+    transition-duration: 0.3s;
+    box-shadow: 0px 0px 7px 3px #e1e4e5;
+}
+
+.active {
+    transform: scale(1.04);
+    background-color: #2f313e !important;
+    color: #feffff !important;
+
 }
 
 .userlist-list a:hover {
-    transform: scale(1.02);
+    transform: scale(1.04);
 }

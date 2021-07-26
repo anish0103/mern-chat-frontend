@@ -1,11 +1,13 @@
 const Data = [
     {
         Name: 'Anish Patel',
+        Password: 'test123',
+        PhoneNo: '7433027995',
         id: 'u1',
         Friend: [
             {
                 id: 't1',
-                Name: 'Friend1',
+                Name: 'Dhruv Patel',
                 Messages: [{
                     From: 'u1',
                     To: 't1',
@@ -46,7 +48,7 @@ const Data = [
             },
             {
                 id: 't2',
-                Name: 'Friend2',
+                Name: 'Rony Parmar',
                 Messages: [{
                     From: 'u1',
                     To: 't2',

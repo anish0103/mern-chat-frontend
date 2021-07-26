@@ -1,33 +1,52 @@
-import { React, useState } from 'react'
+import { React, useState, useContext } from 'react'
 
 import './ChatContainer.css';
+import { AuthContext } from '../Context/AuthContext';
 import { useParams } from 'react-router-dom'
 import Data from '../Data/dummy';
 
 function ChatContainer(Probs) {
 
+    const Auth = useContext(AuthContext)
     const [inputvalue, setinputvalue] = useState('')
+    // const [scroller, setscroller] = useState(10000)
 
     //Specific Id of the User
-    let userid = 'u1';
+    let userid = Auth.UserId;
     let params = useParams();
     // Fetch data of User from this side
     const User = Data.filter((data) => data.id === userid)
-    console.log(User);
     //Data of all the friends awalable of this user
     const FriendList = User[0].Friend;
     // Data of opponent user of param id(Opponent)
     const UserData = FriendList.filter((data) => data.id === params.params)
 
+    const ScrollerHandler = () => {
+        let elem = document.getElementById('chatbox');
+        let testing = elem.offsetHeight;
+        // let height = elem.scrollHeight + 10000;
+        elem.scrollTo(0, testing)
+    }
+
     const SubmitHandler = (e) => {
         e.preventDefault();
-        console.log('Send Button is clicked!!!')
-        UserData[0].Messages.push({To: params.params, From: userid, Msg: inputvalue})
+        //Input Data
+        const InputData = {To: params.params, From: userid, Msg: inputvalue}
+        UserData[0].Messages.push(InputData);
         setinputvalue('')
+        ScrollerHandler();
+        // let elem = document.getElementById('chatbox');
+        // let testing = elem.offsetHeight;
+        // let height = testing + 10000;
+        // setscroller(elem.scrollHeight + 10000);
+        // console.log(height);
+        // elem.scrollTo(0, scroller);
     }
 
     const InputHandler = (e) => {
         setinputvalue(e.target.value)
+        let elem = document.getElementById('chatbox');
+        elem.scrollTo(0, 10000);
     }
 
     return (
@@ -35,7 +54,7 @@ function ChatContainer(Probs) {
             <div className='chatcontainer-nameuser'>
                 <h3>{UserData[0].Name}</h3>
             </div>
-            <div className='chatcontainer-chatarea'>
+            <div id='chatbox' className='chatcontainer-chatarea'>
                 <ul>
                     {UserData[0].Messages.map((data, index) => {
                         if (data.From !== params.params) {
