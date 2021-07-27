@@ -38,6 +38,7 @@ function App() {
           <LoginPage />
         </Route>}
         {!Login && <Route path="/" exact><HomePage /></Route>}
+        <Redirect to="/" />
       </Router>
       {Login && <div className='app-container'>
         <div className='app-chatcontainer'>

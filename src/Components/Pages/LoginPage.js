@@ -1,11 +1,10 @@
-import { React, useState, useContext, useCallback } from 'react'
+import { React, useState, useContext } from 'react'
 
 import './LoginPage.css';
 import Data from '../Data/dummy';
 import { AuthContext } from '../Context/AuthContext';
 
 function LoginPage() {
-
     const Auth = useContext(AuthContext)
 
     const [Name, SetName] = useState('');
@@ -26,8 +25,8 @@ function LoginPage() {
     const SignUpHandler = (e) => {
         //creating a user
         e.preventDefault();
-        const CreatedUser = [{ Name: Name, Password: Password, PhoneNo: PhoneNo, id: 't1', Friend: [] }]
-        console.log(CreatedUser);
+        const CreatedUser = { Name: Name, Password: Password, PhoneNo: PhoneNo, id: 't1', Friend: [] }
+        // console.log(CreatedUser);
         Data.push(CreatedUser);
         Auth.IdHandler('t1');
         Auth.login();
@@ -39,9 +38,7 @@ function LoginPage() {
     const SignInHandler = (e) => {
         //checking of user exist or not
         e.preventDefault();
-        console.log(Data);
         const User = Data.filter((data) => data.PhoneNo === PhoneNo)
-        console.log(User[0].id);
         if (User[0].Password === Password) {
             Auth.IdHandler(User[0].id);
             Auth.login();

@@ -9,7 +9,6 @@ function ChatContainer(Probs) {
 
     const Auth = useContext(AuthContext)
     const [inputvalue, setinputvalue] = useState('')
-    // const [scroller, setscroller] = useState(10000)
 
     //Specific Id of the User
     let userid = Auth.UserId;
@@ -21,11 +20,16 @@ function ChatContainer(Probs) {
     // Data of opponent user of param id(Opponent)
     const UserData = FriendList.filter((data) => data.id === params.params)
 
+    let Timer;
+    const StopScroller = () => {
+        clearTimeout(Timer);
+    }
+
     const ScrollerHandler = () => {
         let elem = document.getElementById('chatbox');
         let testing = elem.offsetHeight;
-        // let height = elem.scrollHeight + 10000;
         elem.scrollTo(0, testing)
+        StopScroller();
     }
 
     const SubmitHandler = (e) => {
@@ -34,19 +38,13 @@ function ChatContainer(Probs) {
         const InputData = {To: params.params, From: userid, Msg: inputvalue}
         UserData[0].Messages.push(InputData);
         setinputvalue('')
-        ScrollerHandler();
-        // let elem = document.getElementById('chatbox');
-        // let testing = elem.offsetHeight;
-        // let height = testing + 10000;
-        // setscroller(elem.scrollHeight + 10000);
-        // console.log(height);
-        // elem.scrollTo(0, scroller);
+        Timer = setInterval(ScrollerHandler, 100); 
     }
 
     const InputHandler = (e) => {
         setinputvalue(e.target.value)
-        let elem = document.getElementById('chatbox');
-        elem.scrollTo(0, 10000);
+        // let elem = document.getElementById('chatbox');
+        // elem.scrollTo(0, 10000);
     }
 
     return (

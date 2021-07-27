@@ -3,7 +3,6 @@
     flex-direction: column;
     height: 100%;
     width: 100%;
-    background-color: blue;
 }
 
 .userlist-chattext {
@@ -18,12 +17,86 @@
     width: 80%;
 }
 
+.userlist-form {
+    z-index: 100;
+    position: absolute;
+    left: 18%;
+    bottom: 35%;
+}
+
+.userlist-formcontainer {
+    flex: 1;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    height: 91vh;
+}
+
+
+.adduserform {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: inherit;
+}
+
+.adduserform form {
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    justify-content: center;
+    align-items: center;
+    height: fit-content;
+    background-color: #feffff;
+    border-radius: 10px;
+    color: black;
+    border: 2px solid #e1e4e5;
+}
+
+.adduserform form input {
+    padding: 10px;
+    width: 70%;
+    color: black;
+    outline: none;
+    margin: 10px;
+    border: none;
+    background-color: rgb(230, 230, 230);
+    border-radius: 8px;
+}
+
+.adduserform label {
+    width: 73%;
+    text-align: left;
+}
+
+.adduserform button {
+    font-weight: normal !important;
+    border-radius: 8px;
+    padding: 10px;
+    margin: 10px;
+    width: 90px !important;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    background-color: #2f313e !important;
+}
+
+#addbutton {
+    background-image: linear-gradient(90deg ,#714eef, #c466ff);
+}
+
+#userlistform {
+    background-color: #feffff;
+    width: 280px;
+}
+
 .userlist-chattext button {
     width: 50%;
     padding: 6px;
     border: none;
     border-radius: 6px;
-    background-image: linear-gradient(90deg ,#714eef, #c466ff);
+    /* background-image: linear-gradient(90deg ,#714eef, #c466ff); */
     color: white;
     cursor: pointer;
     font-weight: bold;
