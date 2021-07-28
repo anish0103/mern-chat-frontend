@@ -4,11 +4,14 @@ import './ChatContainer.css';
 import { AuthContext } from '../Context/AuthContext';
 import { useParams } from 'react-router-dom'
 import Data from '../Data/dummy';
+import ErrorModal from '../ErrorModal/ErrorModal';
 
 function ChatContainer(Probs) {
 
     const Auth = useContext(AuthContext)
     const [inputvalue, setinputvalue] = useState('')
+    const [Error, SetError] = useState(false)
+    const [ErrorContent, SetErrorContent] = useState();
 
     //Specific Id of the User
     let userid = Auth.UserId;
@@ -35,43 +38,52 @@ function ChatContainer(Probs) {
     const SubmitHandler = (e) => {
         e.preventDefault();
         //Input Data
-        const InputData = {To: params.params, From: userid, Msg: inputvalue}
+        if (inputvalue.trim().length === 0) {
+            SetErrorContent('Please Enter Some Value');
+            return SetError(true);
+        }
+        const InputData = { To: params.params, From: userid, Msg: inputvalue }
         UserData[0].Messages.push(InputData);
         setinputvalue('')
-        Timer = setInterval(ScrollerHandler, 100); 
+        Timer = setInterval(ScrollerHandler, 100);
     }
 
     const InputHandler = (e) => {
         setinputvalue(e.target.value)
-        // let elem = document.getElementById('chatbox');
-        // elem.scrollTo(0, 10000);
+    }
+
+    const ModalHandler = () => {
+        SetError(false)
     }
 
     return (
-        <div className='chatcontainer-maincontainer'>
-            <div className='chatcontainer-nameuser'>
-                <h3>{UserData[0].Name}</h3>
-            </div>
-            <div id='chatbox' className='chatcontainer-chatarea'>
-                <ul>
-                    {UserData[0].Messages.map((data, index) => {
-                        if (data.From !== params.params) {
-                            return <div key={index} className='msgcontainer'><li className='sender'>{data.Msg}</li></div>
-                        } else {
-                            return <div key={index} className='msgcontainer'><li className='receiver'>{data.Msg}</li></div>
-                        }
-                    })}
-                </ul>
-            </div>
-            <form className='chatcontainer-message'>
-                <div className='sendmessage-container'>
-                    <input onChange={InputHandler} value={inputvalue} placeholder='Type your message here...'></input>
+        <>
+            <ErrorModal visible={Error} title={'Error'} content={ErrorContent} ModalHandler={ModalHandler} />
+            <div className='chatcontainer-maincontainer'>
+                <div className='chatcontainer-nameuser'>
+                    <h3>{UserData[0].Name}</h3>
                 </div>
-                <div className='sendbutton-container'>
-                    <button type='submit' onClick={SubmitHandler}>Send</button>
+                <div id='chatbox' className='chatcontainer-chatarea'>
+                    <ul>
+                        {UserData[0].Messages.map((data, index) => {
+                            if (data.From !== params.params) {
+                                return <div key={index} className='msgcontainer'><li className='sender'>{data.Msg}</li></div>
+                            } else {
+                                return <div key={index} className='msgcontainer'><li className='receiver'>{data.Msg}</li></div>
+                            }
+                        })}
+                    </ul>
                 </div>
-            </form>
-        </div>
+                <form className='chatcontainer-message'>
+                    <div className='sendmessage-container'>
+                        <input onChange={InputHandler} value={inputvalue} placeholder='Type your message here...'></input>
+                    </div>
+                    <div className='sendbutton-container'>
+                        <button type='submit' onClick={SubmitHandler}>Send</button>
+                    </div>
+                </form>
+            </div>
+        </>
     )
 }
 

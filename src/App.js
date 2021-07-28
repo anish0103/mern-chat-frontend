@@ -1,4 +1,4 @@
-import { React, useState, useCallback } from "react";
+import { React, useState, useCallback, useEffect } from "react";
 import { BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-dom';
 
 import Header from "./Components/Navigation/Header";
@@ -12,17 +12,36 @@ import './App.css';
 
 function App() {
 
+  const LoginData = localStorage.getItem('Data');
+  let ldata;
+
+  const StorageHandler = (data) => {
+    ldata = {PhoneNo: data.PhoneNo, Password: data.Password, thisid: data.id}
+    localStorage.setItem('Data', JSON.stringify(ldata))
+    console.log('Storage function')
+  }
+
   const [Login, setLogin] = useState(false)
   const [id, setid] = useState('')
+
+  useEffect(() => {
+    if(LoginData) {
+      setLogin(true)
+      const user = JSON.parse(LoginData);
+      setid(user.thisid);
+    }
+  }, [LoginData]);
 
   const login = useCallback(
     () => {
       setLogin(true)
+      console.log('Login function')
     }, [])
 
   const logout = useCallback(
     () => {
       setLogin(false)
+      localStorage.removeItem('Data');
     }, [])
 
   const IdHandler = useCallback(
@@ -35,7 +54,7 @@ function App() {
       <Router>
         <Header />
         {!Login && <Route path="/Auth" exact>
-          <LoginPage />
+          <LoginPage StorageHandler={StorageHandler}/>
         </Route>}
         {!Login && <Route path="/" exact><HomePage /></Route>}
         <Redirect to="/" />

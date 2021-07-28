@@ -75,11 +75,15 @@
     border-radius: 8px;
     padding: 10px;
     margin: 10px;
-    width: 90px !important;
+    width: 80px !important;
     border: none;
     outline: none;
     cursor: pointer;
     background-color: #2f313e !important;
+}
+
+.userlistform-button {
+    display: flex;
 }
 
 #addbutton {

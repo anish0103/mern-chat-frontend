@@ -9,7 +9,7 @@ const HomePage = () => {
                 <h1>Welcome</h1>
             </div>
             <div className='homepage-besttext'>
-                <h3>Have your best Chat</h3>
+                <h3>Have Your Best Chat</h3>
             </div>
         </div>
     )
