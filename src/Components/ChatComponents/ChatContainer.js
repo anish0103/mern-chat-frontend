@@ -1,11 +1,19 @@
-import { React, useState, useContext } from 'react'
+import { React, useState, useContext, useEffect } from 'react'
 
 import './ChatContainer.css';
 import { AuthContext } from '../Context/AuthContext';
 import { useParams } from 'react-router-dom'
+import io from 'socket.io-client'
 import ErrorModal from '../ErrorModal/ErrorModal';
 
+let socket;
+const backend = 'localhost:80/'
+
 function ChatContainer(Probs) {
+
+    useEffect(() => {
+        socket = io(backend)
+    }, [])
 
     const Auth = useContext(AuthContext)
     const [inputvalue, setinputvalue] = useState('')
@@ -15,9 +23,7 @@ function ChatContainer(Probs) {
     let userid = Auth.UserId;
     let params = useParams();
     const FriendList = Auth.UserData.Friend;
-    console.log(FriendList)
     const UserData = FriendList.filter((data) => data.id === params.params)
-    console.log(UserData)
 
     let Timer;
     const StopScroller = () => {
@@ -26,9 +32,23 @@ function ChatContainer(Probs) {
 
     const ScrollerHandler = () => {
         let elem = document.getElementById('chatbox');
-        let testing = elem.offsetHeight + 10000;
+        let testing = elem.offsetHeight + 100000000;
         elem.scrollTo(0, testing)
         StopScroller();
+    }
+
+    const GetUsers = async () => {
+        const response = await fetch('http://localhost/api/users/')
+        const data = await response.json()
+        const UserData = data.filter((data)=> data._id === Auth.UserId)
+        Auth.UserDataHandler(UserData[0]);
+        Timer = setInterval(ScrollerHandler, 100);
+    }
+
+    if(socket) {
+        socket.on('resmessage', (data)=>{
+            GetUsers();
+        })
     }
 
     const AddMessage = async (data) => {
@@ -44,6 +64,7 @@ function ChatContainer(Probs) {
         setinputvalue('')
         Auth.UserDataHandler(userdata);
         Timer = setInterval(ScrollerHandler, 100);
+        socket.emit('sendmessage', data)
     }
 
     const SubmitHandler = (e) => {
@@ -55,7 +76,6 @@ function ChatContainer(Probs) {
         }
         const InputData = { To: params.params, From: userid, Msg: inputvalue }
         AddMessage(InputData)
-        // Timer = setInterval(ScrollerHandler, 100);
     }
 
     const InputHandler = (e) => {
