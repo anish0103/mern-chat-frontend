@@ -1,39 +1,63 @@
-import { React, useContext, useState } from 'react'
+import { React, useContext, useState, useEffect } from 'react'
 import { NavLink } from 'react-router-dom';
 
 import './UserList.css';
-import Data from '../Data/dummy';
 import ErrorModal from '../ErrorModal/ErrorModal';
 import { AuthContext } from '../Context/AuthContext';
 
 function UserList(Probs) {
 
-    const Auth = useContext(AuthContext)
-    // Fetch data of User from this side
-    const User = Data.filter((data) => data.id === Auth.UserId)
-    //Data of all the friends awalable of this user
-    const FriendList = User[0].Friend;
-    // console.log(FriendList);
-
     const [PhoneNo, SetPhoneNo] = useState('');
     const [Addform, Setaddform] = useState(false)
     const [Error, SetError] = useState(false)
     const [ErrorContent, SetErrorContent] = useState();
+    const [Users, SetUsers] = useState()
+
+    useEffect(() => {
+        const GetUsers = async () => {
+            const response = await fetch('http://localhost/api/users/')
+            const data = await response.json()
+            SetUsers(data);
+        }
+        GetUsers();
+    }, [])
+
+    const Auth = useContext(AuthContext)
+    let FriendList=[];
+
+    if(Auth.UserData === undefined) {
+        Auth.logout()
+    } else {
+        FriendList = Auth.UserData.Friend;
+    }
+
 
     const Phonehandler = (e) => {
         SetPhoneNo(e.target.value)
     }
 
+    const AddFriendFunction = async (data) => {
+        const response = await fetch('http://localhost/api/users/addfriend/', {
+            method: 'POST',
+            body: JSON.stringify(data),
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        })
+        const userdata = await response.json()
+        Auth.UserDataHandler(userdata);
+    }
+
     const AddFriendHandler = (e) => {
         e.preventDefault();
-        const test = Data.filter((data) => data.PhoneNo === PhoneNo);
+        const test = Users.filter((data) => data.PhoneNo === PhoneNo);
         if (test.length === 0) {
-            // return console.log('The user you want to add dont have account')
             SetErrorContent(`The user you want to add don't have account in this Application. If You want to talk tell him/her to SignUp`);
             return SetError(true);
         }
-        const NewFriend = { id: test[0].id, Name: test[0].Name, Messages: [] };
-        FriendList.push(NewFriend);
+        console.log(test)
+        const NewFriend = { id: test[0]._id, Userid: Auth.UserId };
+        AddFriendFunction(NewFriend);
         SetPhoneNo('')
         Setaddform(false);
     }

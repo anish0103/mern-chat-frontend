@@ -3,7 +3,6 @@ import { React, useState, useContext } from 'react'
 import './ChatContainer.css';
 import { AuthContext } from '../Context/AuthContext';
 import { useParams } from 'react-router-dom'
-import Data from '../Data/dummy';
 import ErrorModal from '../ErrorModal/ErrorModal';
 
 function ChatContainer(Probs) {
@@ -13,15 +12,12 @@ function ChatContainer(Probs) {
     const [Error, SetError] = useState(false)
     const [ErrorContent, SetErrorContent] = useState();
 
-    //Specific Id of the User
     let userid = Auth.UserId;
     let params = useParams();
-    // Fetch data of User from this side
-    const User = Data.filter((data) => data.id === userid)
-    //Data of all the friends awalable of this user
-    const FriendList = User[0].Friend;
-    // Data of opponent user of param id(Opponent)
+    const FriendList = Auth.UserData.Friend;
+    console.log(FriendList)
     const UserData = FriendList.filter((data) => data.id === params.params)
+    console.log(UserData)
 
     let Timer;
     const StopScroller = () => {
@@ -35,6 +31,21 @@ function ChatContainer(Probs) {
         StopScroller();
     }
 
+    const AddMessage = async (data) => {
+        const response = await fetch('http://localhost/api/users/addmessage/', {
+            method: 'POST',
+            body: JSON.stringify(data),
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        })
+        
+        const userdata = await response.json()
+        setinputvalue('')
+        Timer = setInterval(ScrollerHandler, 100);
+        Auth.UserDataHandler(userdata);
+    }
+
     const SubmitHandler = (e) => {
         e.preventDefault();
         //Input Data
@@ -43,8 +54,7 @@ function ChatContainer(Probs) {
             return SetError(true);
         }
         const InputData = { To: params.params, From: userid, Msg: inputvalue }
-        UserData[0].Messages.push(InputData);
-        setinputvalue('')
+        AddMessage(InputData)
         Timer = setInterval(ScrollerHandler, 100);
     }
 

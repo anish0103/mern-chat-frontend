@@ -16,13 +16,14 @@ function App() {
   let ldata;
 
   const StorageHandler = (data) => {
-    ldata = {PhoneNo: data.PhoneNo, Password: data.Password, thisid: data.id}
+    ldata = {PhoneNo: data.PhoneNo, Password: data.Password, thisid: data._id}
     localStorage.setItem('Data', JSON.stringify(ldata))
     console.log('Storage function')
   }
 
   const [Login, setLogin] = useState(false)
   const [id, setid] = useState('')
+  const [UserData, SetUserData] = useState()
 
   useEffect(() => {
     if(LoginData) {
@@ -49,8 +50,13 @@ function App() {
       setid(data)
     }, [])
 
+    const UserDataHandler = useCallback(
+      (data) => {
+        SetUserData(data)
+      }, [])
+
   return (
-    <AuthContext.Provider value={{ isLoggedIn: Login, login: login, logout: logout, UserId: id, IdHandler: IdHandler }}>
+    <AuthContext.Provider value={{ isLoggedIn: Login, login: login, logout: logout, UserId: id, IdHandler: IdHandler, UserDataHandler: UserDataHandler, UserData: UserData }}>
       <Router>
         <Header />
         {!Login && <Route path="/Auth" exact>

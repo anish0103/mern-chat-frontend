@@ -1,7 +1,6 @@
-import { React, useState, useContext } from 'react'
+import { React, useState, useContext, useEffect } from 'react'
 
 import './LoginPage.css';
-import Data from '../Data/dummy';
 import ErrorModal from '../ErrorModal/ErrorModal';
 import { AuthContext } from '../Context/AuthContext';
 
@@ -15,6 +14,17 @@ function LoginPage(Probs) {
     const [Mode, setMode] = useState(false)
     const [Error, SetError] = useState(false)
     const [ErrorContent, SetErrorContent] = useState();
+    const [Users, SetUsers] = useState('')
+
+    useEffect(() => {
+        const GetUsers = async () => {
+            const response = await fetch('http://localhost/api/users/')
+            const data = await response.json()
+            console.log(data);
+            SetUsers(data);
+        }
+        GetUsers();
+    }, [])
 
     const Namehandler = (e) => {
         SetName(e.target.value)
@@ -26,44 +36,91 @@ function LoginPage(Probs) {
         SetPassword(e.target.value)
     }
 
+    const SignUpFunction = async (data) => {
+        console.log(data)
+        const response = await fetch('http://localhost/api/users/signup/', {
+            method: 'POST',
+            body: JSON.stringify(data),
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        })
+
+        const userdata = await response.json()
+        console.log(userdata)
+        if (response.ok) {
+            if (userdata === undefined) {
+                SetErrorContent(userdata.Message);
+                return SetError(true);
+            } else {
+                console.log(userdata);
+                Probs.StorageHandler(userdata);
+                Auth.IdHandler(userdata._id);
+                Auth.UserDataHandler(userdata);
+                Auth.login();
+                SetName('')
+                SetPhoneNo('')
+                SetPassword('')
+            }
+        } else {
+            SetErrorContent('Something Went Wrong. Please Try Sometime Later!');
+            return SetError(true);
+        }
+    }
+
     const SignUpHandler = (e) => {
         //creating a user
         e.preventDefault();
         //checking for data validation in signup form
         if (!Name.match(namevalid) || PhoneNo.length > 10 || PhoneNo.length < 10 || Password.trim().length === 0 || Name.trim().length === 0) {
-            // return console.log('Invalid Data!!!')
             SetErrorContent('Please Enter Valid Data');
             return SetError(true);
         }
-        const CreatedUser = { Name: Name, Password: Password, PhoneNo: PhoneNo, id: 't1', Friend: [] }
-        // console.log(CreatedUser);
-        Data.push(CreatedUser);
-        Auth.IdHandler('t1');
-        Auth.login();
-        Probs.StorageHandler(CreatedUser);
-        SetName('')
-        SetPhoneNo('')
-        SetPassword('')
+        const ExistingUser = Users.filter((data) => data.PhoneNo === PhoneNo)
+        if (ExistingUser.length !== 0) {
+            SetErrorContent('User Already Exist!!');
+            return SetError(true);
+        }
+        const CreatedUser = { Name: Name, Password: Password, PhoneNo: PhoneNo, Friend: [] };
+        //Passing Data for SignUp Process
+        SignUpFunction(CreatedUser);
+    }
+
+    const SignInFunction = async (data) => {
+        console.log(data)
+        const response = await fetch('http://localhost/api/users/login/', {
+            method: 'POST',
+            body: JSON.stringify(data),
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        })
+
+        const userdata = await response.json()
+        if (response.ok) {
+            if (userdata[0] === undefined) {
+                SetErrorContent(userdata.Message);
+                return SetError(true);
+            } else {
+                console.log(userdata[0]);
+                Probs.StorageHandler(userdata[0]);
+                Auth.UserDataHandler(userdata[0]);
+                Auth.IdHandler(userdata[0]._id);
+                Auth.login();
+            }
+        } else {
+            SetErrorContent('Something Went Wrong. Please Try Sometime Later!');
+            return SetError(true);
+        }
     }
 
     const SignInHandler = (e) => {
         //checking of user exist or not
         e.preventDefault();
-        const User = Data.filter((data) => data.PhoneNo === PhoneNo)
-        //if not then return error modal
-        if (User.length === 0) {
-            // return console.log('User Not found');
-            SetErrorContent('Please Enter Valid Data');
-            return SetError(true);
-        }
-        if (User[0].Password === Password) {
-            Probs.StorageHandler(User[0]);
-            Auth.IdHandler(User[0].id);
-            Auth.login();
-        } else {
-            SetErrorContent('Invalid Credentail. Please Provide correct Data');
-            return SetError(true);
-        }
+        console.log(Users)
+        const Data = { PhoneNo: PhoneNo, Password: Password }
+        //passing Data to SignIn Process
+        SignInFunction(Data);
     }
 
     let content;
