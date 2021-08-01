@@ -26,7 +26,7 @@ function ChatContainer(Probs) {
 
     const ScrollerHandler = () => {
         let elem = document.getElementById('chatbox');
-        let testing = elem.offsetHeight;
+        let testing = elem.offsetHeight + 10000;
         elem.scrollTo(0, testing)
         StopScroller();
     }
@@ -42,8 +42,8 @@ function ChatContainer(Probs) {
         
         const userdata = await response.json()
         setinputvalue('')
-        Timer = setInterval(ScrollerHandler, 100);
         Auth.UserDataHandler(userdata);
+        Timer = setInterval(ScrollerHandler, 100);
     }
 
     const SubmitHandler = (e) => {
@@ -55,7 +55,7 @@ function ChatContainer(Probs) {
         }
         const InputData = { To: params.params, From: userid, Msg: inputvalue }
         AddMessage(InputData)
-        Timer = setInterval(ScrollerHandler, 100);
+        // Timer = setInterval(ScrollerHandler, 100);
     }
 
     const InputHandler = (e) => {
