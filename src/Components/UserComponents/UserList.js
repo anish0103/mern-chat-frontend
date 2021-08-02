@@ -15,29 +15,36 @@ function UserList(Probs) {
 
     useEffect(() => {
         const GetUsers = async () => {
-            const response = await fetch('http://localhost/api/users/')
+            const response = await fetch(process.env.REACT_APP_BACKEND_URL + '/api/users/')
             const data = await response.json()
             SetUsers(data);
         }
         GetUsers();
     }, [])
 
+    const UserInfo = async () => {
+        const response = await fetch(process.env.REACT_APP_BACKEND_URL + '/api/users/')
+        const data = await response.json()
+        const UserData = data.filter((data)=> data._id === Auth.UserId)
+        Auth.UserDataHandler(UserData[0]);
+    }
+
     const Auth = useContext(AuthContext)
     let FriendList=[];
 
     if(Auth.UserData === undefined) {
-        Auth.logout()
+        UserInfo();
+        console.log(process.env.REACT_APP_BACKEND_URL);
     } else {
         FriendList = Auth.UserData.Friend;
     }
-
 
     const Phonehandler = (e) => {
         SetPhoneNo(e.target.value)
     }
 
     const AddFriendFunction = async (data) => {
-        const response = await fetch('http://localhost/api/users/addfriend/', {
+        const response = await fetch(process.env.REACT_APP_BACKEND_URL + '/api/users/addfriend/', {
             method: 'POST',
             body: JSON.stringify(data),
             headers: {

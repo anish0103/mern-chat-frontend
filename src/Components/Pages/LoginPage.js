@@ -18,9 +18,8 @@ function LoginPage(Probs) {
 
     useEffect(() => {
         const GetUsers = async () => {
-            const response = await fetch('http://localhost/api/users/')
+            const response = await fetch(process.env.REACT_APP_BACKEND_URL + '/api/users/')
             const data = await response.json()
-            console.log(data);
             SetUsers(data);
         }
         GetUsers();
@@ -38,7 +37,7 @@ function LoginPage(Probs) {
 
     const SignUpFunction = async (data) => {
         console.log(data)
-        const response = await fetch('http://localhost/api/users/signup/', {
+        const response = await fetch(process.env.REACT_APP_BACKEND_URL + '/api/users/signup/', {
             method: 'POST',
             body: JSON.stringify(data),
             headers: {
@@ -87,8 +86,8 @@ function LoginPage(Probs) {
     }
 
     const SignInFunction = async (data) => {
-        console.log(data)
-        const response = await fetch('http://localhost/api/users/login/', {
+        console.log(process.env.REACT_APP_BACKEND_URL);
+        const response = await fetch(process.env.REACT_APP_BACKEND_URL + '/api/users/login/' ,{
             method: 'POST',
             body: JSON.stringify(data),
             headers: {
@@ -102,14 +101,13 @@ function LoginPage(Probs) {
                 SetErrorContent(userdata.Message);
                 return SetError(true);
             } else {
-                console.log(userdata[0]);
                 Probs.StorageHandler(userdata[0]);
                 Auth.UserDataHandler(userdata[0]);
                 Auth.IdHandler(userdata[0]._id);
                 Auth.login();
             }
         } else {
-            SetErrorContent('Something Went Wrong. Please Try Sometime Later!');
+            SetErrorContent('Please Valid Credentials!!');
             return SetError(true);
         }
     }
@@ -117,7 +115,6 @@ function LoginPage(Probs) {
     const SignInHandler = (e) => {
         //checking of user exist or not
         e.preventDefault();
-        console.log(Users)
         const Data = { PhoneNo: PhoneNo, Password: Password }
         //passing Data to SignIn Process
         SignInFunction(Data);

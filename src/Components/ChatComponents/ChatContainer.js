@@ -7,7 +7,7 @@ import io from 'socket.io-client'
 import ErrorModal from '../ErrorModal/ErrorModal';
 
 let socket;
-const backend = 'localhost:80/'
+const backend = process.env.REACT_APP_BACKEND_URL
 
 function ChatContainer(Probs) {
 
@@ -38,7 +38,7 @@ function ChatContainer(Probs) {
     }
 
     const GetUsers = async () => {
-        const response = await fetch('http://localhost/api/users/')
+        const response = await fetch(process.env.REACT_APP_BACKEND_URL + '/api/users/')
         const data = await response.json()
         const UserData = data.filter((data)=> data._id === Auth.UserId)
         Auth.UserDataHandler(UserData[0]);
@@ -52,7 +52,7 @@ function ChatContainer(Probs) {
     }
 
     const AddMessage = async (data) => {
-        const response = await fetch('http://localhost/api/users/addmessage/', {
+        const response = await fetch(process.env.REACT_APP_BACKEND_URL + '/api/users/addmessage/', {
             method: 'POST',
             body: JSON.stringify(data),
             headers: {
