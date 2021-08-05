@@ -1,4 +1,4 @@
-import { React, useState, useContext, useEffect } from 'react'
+import { React, useState, useContext, useEffect, useCallback } from 'react'
 
 import './ChatContainer.css';
 import { AuthContext } from '../Context/AuthContext';
@@ -37,19 +37,23 @@ function ChatContainer(Probs) {
         StopScroller();
     }
 
-    const GetUsers = async () => {
-        const response = await fetch(process.env.REACT_APP_BACKEND_URL + '/api/users/')
-        const data = await response.json()
-        const UserData = data.filter((data)=> data._id === Auth.UserId)
-        Auth.UserDataHandler(UserData[0]);
-        Timer = setInterval(ScrollerHandler, 100);
-    }
+    const GetUsers = useCallback(
+        async () => {
+            fetch(process.env.REACT_APP_BACKEND_URL + '/api/users/').then((response) => response.json()).then((data)=> {
+                const UserData = data.filter((data) => data._id === Auth.UserId)
+                Auth.UserDataHandler(UserData[0]);
+                console.log("GetUsers is called")
+                Timer = setInterval(ScrollerHandler, 100);
+            })
+        }, [])
 
-    if(socket) {
-        socket.on('resmessage', (data)=>{
-            GetUsers();
-        })
-    }
+    useEffect(() => {
+        if (socket) {
+            socket.on('resmessage', (data) => {
+                GetUsers();
+            })
+        }
+    }, [GetUsers])
 
     const AddMessage = async (data) => {
         const response = await fetch(process.env.REACT_APP_BACKEND_URL + '/api/users/addmessage/', {
@@ -59,7 +63,7 @@ function ChatContainer(Probs) {
                 'Content-Type': 'application/json',
             }
         })
-        
+
         const userdata = await response.json()
         setinputvalue('')
         Auth.UserDataHandler(userdata);

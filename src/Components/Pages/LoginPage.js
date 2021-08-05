@@ -86,7 +86,6 @@ function LoginPage(Probs) {
     }
 
     const SignInFunction = async (data) => {
-        console.log(process.env.REACT_APP_BACKEND_URL);
         const response = await fetch(process.env.REACT_APP_BACKEND_URL + '/api/users/login/' ,{
             method: 'POST',
             body: JSON.stringify(data),
