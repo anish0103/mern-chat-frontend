@@ -42,7 +42,6 @@ function ChatContainer(Probs) {
             fetch(process.env.REACT_APP_BACKEND_URL + '/api/users/').then((response) => response.json()).then((data)=> {
                 const UserData = data.filter((data) => data._id === Auth.UserId)
                 Auth.UserDataHandler(UserData[0]);
-                console.log("GetUsers is called")
                 Timer = setInterval(ScrollerHandler, 100);
             })
         }, [])

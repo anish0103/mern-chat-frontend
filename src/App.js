@@ -18,7 +18,6 @@ function App() {
   const StorageHandler = (data) => {
     ldata = {PhoneNo: data.PhoneNo, Password: data.Password, thisid: data._id}
     localStorage.setItem('Data', JSON.stringify(ldata))
-    console.log('Storage function')
   }
 
   const [Login, setLogin] = useState(false)
@@ -36,7 +35,6 @@ function App() {
   const login = useCallback(
     () => {
       setLogin(true)
-      console.log('Login function')
     }, [])
 
   const logout = useCallback(
