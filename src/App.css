@@ -27,3 +27,48 @@
     background-color: #2f313e;
     border-radius: 20px;
 }
+
+@media screen and (max-width:450px) {
+    .app-userlist {
+        height: 84vh;
+        width: 100%;
+    }
+
+    .app-container {
+        height: 84vh;
+    }
+
+    .app-chatcontainer {
+        position: relative;
+    }
+
+    .app-userlist .userlist-form {
+        left: 11%;
+        bottom: 30%;
+    }
+
+    .app-userlist #addbutton {
+        width: 19%;
+        height: 65%;
+    }
+
+    .app-chatcontainer .sendbutton-container {
+        width: 25%;
+    }
+
+    .app-chatcontainer .chathome-maincontainer {
+        display: none;
+    }
+
+    .app-chatcontainer .chatcontainer-maincontainer {
+        position: absolute;
+        top: 0;
+        left: 0;
+        z-index: 100;
+        height: 84vh;
+    }
+
+    .app-chatcontainer .chatcontainer-nameuser {
+        background-color: white;
+    }
+}

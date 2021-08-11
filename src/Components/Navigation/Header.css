@@ -12,6 +12,10 @@
     padding: 10px;
 }
 
+.header-projectname h2 {
+    font-size: 1.5em;
+}
+
 .header-button {
     padding: 10px;
     width: 50%;
@@ -32,4 +36,14 @@
 
 .header-button a:hover {
     transform: scale(1.06);
+}
+
+@media screen and (max-width:450px) {
+    .header-projectname h2 {
+        font-size: 1.3em;
+    }
+
+    .header-maincontainer {
+        width: 99.25%;
+    }
 }

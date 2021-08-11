@@ -59,3 +59,21 @@
 .formcontainer button:hover {
     color: #000000;
 }
+
+@media screen and (max-width:450px) {
+    .formcontainer form {
+        width: 300px;
+    }
+
+    .formcontainer form input {
+        width: 80%;
+    }
+
+    .formcontainer label {
+        width: 83%;
+    }
+
+    .contact-formcontainer {
+        height: 87vh;
+    }
+}

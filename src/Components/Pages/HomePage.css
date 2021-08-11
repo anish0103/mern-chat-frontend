@@ -15,6 +15,20 @@
 
 .homepage-besttext {
     padding: 20px;
-    font-size: 60px;
+    font-size: 60px;  
+}
+
+@media screen and (max-width:450px) {
+    .homepage-welcometext {
+        font-size: 20px;
+    }
+
+    .homepage-besttext {
+        font-size: 30px;  
+    }
+
+    .homepage-maincontainer {
+        height: 87vh;
+    }
     
 }
