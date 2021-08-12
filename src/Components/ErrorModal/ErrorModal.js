@@ -9,13 +9,14 @@ function ErrorModal(Probs) {
         <div className='errormodal-maincontainer'>
             <Modal style={{
                 overlay: {
-                    backgroundColor: 'rgba(0, 0, 0, 0.6)'
+                    backgroundColor: 'rgba(0, 0, 0, 0.6)',
+                    zIndex: '200'
                 },
                 content: {
-                    top: '250px',
-                    left: '350px',
-                    right: '350px',
-                    bottom: '250px',
+                    top: '34%',
+                    left: '20%',
+                    right: '20%',
+                    bottom: '34%',
                     background: '#fff',
                 }
             }} isOpen={Probs.visible} onRequestClose={Probs.ModalHandler}>

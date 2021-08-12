@@ -29,3 +29,20 @@
     border-radius: 8px;
     font-weight: bold;
 }
+
+@media screen and (max-width:450px) {
+    .errormodal-content h1 {
+        font-size: 1.4em;
+        height: 25%;
+    }
+    
+    .errormodal-content h3 {
+        font-size: 1.0em;
+    }
+
+    .errormodal-content button {
+        width: 30%;
+        padding: 9px;
+        right: 2%;
+    }
+}
