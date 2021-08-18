@@ -25,14 +25,14 @@ function UserList(Probs) {
     const UserInfo = async () => {
         const response = await fetch(process.env.REACT_APP_BACKEND_URL + '/api/users/')
         const data = await response.json()
-        const UserData = data.filter((data)=> data._id === Auth.UserId)
+        const UserData = data.filter((data) => data._id === Auth.UserId)
         Auth.UserDataHandler(UserData[0]);
     }
 
     const Auth = useContext(AuthContext)
-    let FriendList=[];
+    let FriendList = [];
 
-    if(Auth.UserData === undefined) {
+    if (Auth.UserData === undefined) {
         UserInfo();
         console.log(process.env.REACT_APP_BACKEND_URL);
     } else {
@@ -106,7 +106,7 @@ function UserList(Probs) {
                     </div>}
                 </div>
                 <div className='userlist-list'>
-                    {FriendList.map((data) => (<NavLink to={{ pathname: `/home/${data.id}`, data: data }} activeClassName='active' key={data.id}>{data.Name}</NavLink>))}
+                    {FriendList.map((data) => (<NavLink to={{ pathname: `/home/${data.id}`, data: data }} activeClassName='active' key={data.id}><div className="userlist-user"><div className="userlist-profile"><img src={process.env.REACT_APP_BACKEND_URL +`/uploads/${data.Image}`} alt={data.Image} /></div><div className="userlist-name">{data.Name}</div></div></NavLink>))}
                 </div>
             </div>
         </>

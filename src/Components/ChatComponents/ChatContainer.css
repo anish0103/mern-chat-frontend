@@ -12,6 +12,19 @@
     align-items: center;
 }
 
+.chatcontainer-profile {
+    width: 45px;
+    border-radius: 100px;
+    height: 45px;
+    overflow: hidden;
+    margin-right: 1.5%;
+}
+
+.chatcontainer-profile img {
+    height: 100%;
+    width: 100%;
+}
+
 .chatcontainer-chatarea {
     height: 90%;
     padding: 12px;

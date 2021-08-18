@@ -94,6 +94,8 @@ function ChatContainer(Probs) {
             <ErrorModal visible={Error} title={'Error'} content={ErrorContent} ModalHandler={ModalHandler} />
             <div className='chatcontainer-maincontainer'>
                 <div className='chatcontainer-nameuser'>
+                    {console.log(UserData[0].Image)}
+                    <div className="chatcontainer-profile"><a href={process.env.REACT_APP_BACKEND_URL + `/uploads/${UserData[0].Image}`} target="_blank"><img src={process.env.REACT_APP_BACKEND_URL + `/uploads/${UserData[0].Image}`} alt={UserData[0].Image}/></a></div>
                     <h3>{UserData[0].Name}</h3>
                 </div>
                 <div id='chatbox' className='chatcontainer-chatarea'>

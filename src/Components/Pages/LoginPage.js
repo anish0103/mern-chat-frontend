@@ -11,6 +11,7 @@ function LoginPage(Probs) {
     const [Name, SetName] = useState('');
     const [PhoneNo, SetPhoneNo] = useState('');
     const [Password, SetPassword] = useState('');
+    const [Image, SetImage] = useState('');
     const [Mode, setMode] = useState(false)
     const [Error, SetError] = useState(false)
     const [ErrorContent, SetErrorContent] = useState();
@@ -35,14 +36,19 @@ function LoginPage(Probs) {
         SetPassword(e.target.value)
     }
 
-    const SignUpFunction = async (data) => {
-        console.log(data)
+    const FileHandler = (e) => {
+        SetImage(e.target.files[0])
+    }
+
+    const SignUpFunction = async () => {
+        const data = new FormData();
+        data.append("Name", Name)
+        data.append("PhoneNo", PhoneNo)
+        data.append("Password", Password)
+        data.append("Image", Image)
         const response = await fetch(process.env.REACT_APP_BACKEND_URL + '/api/users/signup/', {
             method: 'POST',
-            body: JSON.stringify(data),
-            headers: {
-                'Content-Type': 'application/json',
-            }
+            body: data,
         })
 
         const userdata = await response.json()
@@ -80,13 +86,12 @@ function LoginPage(Probs) {
             SetErrorContent('User Already Exist!!');
             return SetError(true);
         }
-        const CreatedUser = { Name: Name, Password: Password, PhoneNo: PhoneNo, Friend: [] };
-        //Passing Data for SignUp Process
-        SignUpFunction(CreatedUser);
+        // Passing Data for SignUp Process
+        SignUpFunction();
     }
 
     const SignInFunction = async (data) => {
-        const response = await fetch(process.env.REACT_APP_BACKEND_URL + '/api/users/login/' ,{
+        const response = await fetch(process.env.REACT_APP_BACKEND_URL + '/api/users/login/', {
             method: 'POST',
             body: JSON.stringify(data),
             headers: {
@@ -121,9 +126,9 @@ function LoginPage(Probs) {
 
     let content;
     if (!Mode) {
-        content = "Already have account??"
-    } else {
         content = "Go to SignUp Page"
+    } else {
+        content = "Already have account??"
     }
 
     const ModeHandler = (e) => {
@@ -146,14 +151,16 @@ function LoginPage(Probs) {
                 <div className='formcontainer'>
                     <div>
                         <form>
-                            {!Mode && <><label>Name</label>
+                            {Mode && <><label>Name</label>
                                 <input value={Name} onChange={Namehandler} type="text" placeholder='Enter Your Name'></input>
                                 <label>Phone No.</label>
                                 <input value={PhoneNo} onChange={Phonehandler} type="number" placeholder='Enter Your Number'></input>
                                 <label>Password</label>
                                 <input value={Password} onChange={PasswordHandler} type="Password" placeholder='Enter Your Password'></input>
+                                <label>Profile Photo</label>
+                                <input type="file" onChange={FileHandler} name="image" />
                                 <button onClick={SignUpHandler} type='submit'>SignUp</button></>}
-                            {Mode && <><label>Phone No.</label>
+                            {!Mode && <><label>Phone No.</label>
                                 <input value={PhoneNo} onChange={Phonehandler} type="number" placeholder='Enter Your Number'></input>
                                 <label>Password</label>
                                 <input value={Password} onChange={PasswordHandler} type="Password" placeholder='Enter Your Password'></input>
