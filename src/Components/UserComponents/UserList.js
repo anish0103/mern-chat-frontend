@@ -106,7 +106,7 @@ function UserList(Probs) {
                     </div>}
                 </div>
                 <div className='userlist-list'>
-                    {FriendList.map((data) => (<NavLink to={{ pathname: `/home/${data.id}`, data: data }} activeClassName='active' key={data.id}><div className="userlist-user"><div className="userlist-profile"><img src={process.env.REACT_APP_BACKEND_URL +`/uploads/${data.Image}`} alt={data.Image} /></div><div className="userlist-name">{data.Name}</div></div></NavLink>))}
+                    {FriendList.map((data) => (<NavLink to={{ pathname: `/home/${data.id}`, data: data }} activeClassName='active' key={data.id}><div className="userlist-user"><div className="userlist-profile"><img src={process.env.REACT_APP_BACKEND_URL + `/uploads/${data.Image}`} onError={(e)=>{e.target.onerror = null; e.target.src="https://anish-mern-chat-application.herokuapp.com/uploads/1234567893--icons8-user-100.png"}} /></div><div className="userlist-name">{data.Name}</div></div></NavLink>))}
                 </div>
             </div>
         </>
