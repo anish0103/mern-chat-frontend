@@ -7,11 +7,13 @@ import { AuthContext } from '../Context/AuthContext';
 function LoginPage(Probs) {
     const Auth = useContext(AuthContext)
     const namevalid = "^[a-zA-Z.,?\\s]*$";
+    const emailvalid = "^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$";
 
     const [Name, SetName] = useState('');
     const [PhoneNo, SetPhoneNo] = useState('');
     const [Password, SetPassword] = useState('');
     const [Image, SetImage] = useState('');
+    const [Email, SetEmail] = useState('');
     const [Mode, setMode] = useState(false)
     const [Error, SetError] = useState(false)
     const [ErrorContent, SetErrorContent] = useState();
@@ -35,9 +37,11 @@ function LoginPage(Probs) {
     const PasswordHandler = (e) => {
         SetPassword(e.target.value)
     }
-
     const FileHandler = (e) => {
         SetImage(e.target.files[0])
+    }
+    const Emailhandler = (e) => {
+        SetEmail(e.target.value)
     }
 
     const SignUpFunction = async () => {
@@ -46,6 +50,7 @@ function LoginPage(Probs) {
         data.append("PhoneNo", PhoneNo)
         data.append("Password", Password)
         data.append("Image", Image)
+        data.append("EmailId", Email)
         const response = await fetch(process.env.REACT_APP_BACKEND_URL + '/api/users/signup/', {
             method: 'POST',
             body: data,
@@ -66,6 +71,7 @@ function LoginPage(Probs) {
                 SetName('')
                 SetPhoneNo('')
                 SetPassword('')
+                SetEmail('')
             }
         } else {
             SetErrorContent('Something Went Wrong. Please Try Sometime Later!');
@@ -77,7 +83,7 @@ function LoginPage(Probs) {
         //creating a user
         e.preventDefault();
         //checking for data validation in signup form
-        if (!Name.match(namevalid) || PhoneNo.length > 10 || PhoneNo.length < 10 || Password.trim().length === 0 || Name.trim().length === 0) {
+        if (!Name.match(namevalid) || PhoneNo.length > 10 || PhoneNo.length < 10 || Password.trim().length === 0 || Name.trim().length === 0 || !Email.match(emailvalid)) {
             SetErrorContent('Please Enter Valid Data');
             return SetError(true);
         }
@@ -155,6 +161,8 @@ function LoginPage(Probs) {
                                 <input value={Name} onChange={Namehandler} type="text" placeholder='Enter Your Name'></input>
                                 <label>Phone No.</label>
                                 <input value={PhoneNo} onChange={Phonehandler} type="number" placeholder='Enter Your Number'></input>
+                                <label>Email Id</label>
+                                <input value={Email} onChange={Emailhandler} type="email" placeholder='Enter Your Email Id'></input>
                                 <label>Password</label>
                                 <input value={Password} onChange={PasswordHandler} type="Password" placeholder='Enter Your Password'></input>
                                 <label>Profile Photo</label>
