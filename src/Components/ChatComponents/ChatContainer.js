@@ -1,6 +1,7 @@
 import { React, useState, useContext, useEffect, useCallback } from 'react'
 
 import './ChatContainer.css';
+import DownButton from './downbutton.png'
 import { AuthContext } from '../Context/AuthContext';
 import { useParams } from 'react-router-dom'
 import io from 'socket.io-client'
@@ -11,6 +12,8 @@ const backend = process.env.REACT_APP_BACKEND_URL
 
 function ChatContainer(Probs) {
 
+    console.log("Chat Container Running!!")
+
     useEffect(() => {
         socket = io(backend)
     }, [])
@@ -18,6 +21,7 @@ function ChatContainer(Probs) {
     const Auth = useContext(AuthContext)
     const [inputvalue, setinputvalue] = useState('')
     const [Error, SetError] = useState(false)
+    const [Down, SetDown] = useState(true)
     const [ErrorContent, SetErrorContent] = useState();
 
     let userid = Auth.UserId;
@@ -53,6 +57,20 @@ function ChatContainer(Probs) {
             })
         }
     }, [GetUsers])
+
+    useEffect(() => {
+        let elem = document.getElementById('chatbox');
+        let CurrentHeight = elem.scrollHeight;
+        let TotalHeight = elem.offsetHeight;
+        if(CurrentHeight === TotalHeight) {
+            SetDown(false)
+        }
+    }, [])
+
+    const DownButtonHandler = () => {
+        Timer = setInterval(ScrollerHandler, 100);
+        SetDown(false)
+    }
 
     const AddMessage = async (data) => {
         const response = await fetch(process.env.REACT_APP_BACKEND_URL + '/api/users/addmessage/', {
@@ -94,11 +112,13 @@ function ChatContainer(Probs) {
             <ErrorModal visible={Error} title={'Error'} content={ErrorContent} ModalHandler={ModalHandler} />
             <div className='chatcontainer-maincontainer'>
                 <div className='chatcontainer-nameuser'>
-                    {console.log(UserData[0].Image)}
                     <div className="chatcontainer-profile"><a href={process.env.REACT_APP_BACKEND_URL + `/uploads/${UserData[0].Image}`} target="_blank"><img src={process.env.REACT_APP_BACKEND_URL + `/uploads/${UserData[0].Image}`} onError={(e)=>{e.target.onerror = null; e.target.src="https://anish-mern-chat-application.herokuapp.com/uploads/1234567893--icons8-user-100.png"}} /></a></div>
                     <h3>{UserData[0].Name}</h3>
                 </div>
                 <div id='chatbox' className='chatcontainer-chatarea'>
+                     {Down && <div className='chatcontainer-downbutton'>
+                        <img onClick={DownButtonHandler} src={DownButton} alt="Down Arrow"/>
+                    </div>}
                     <ul>
                         {UserData[0].Messages.map((data, index) => {
                             if (data.From !== params.params) {
