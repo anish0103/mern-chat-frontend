@@ -8,6 +8,7 @@ import { AuthContext } from "./Components/Context/AuthContext";
 import HomePage from "./Components/Pages/HomePage";
 import LoginPage from "./Components/Pages/LoginPage";
 import ChatHome from "./Components/ChatComponents/ChatHome";
+import ForgetPage from "./Components/Pages/ForgetPage";
 import './App.css';
 
 function App() {
@@ -16,7 +17,7 @@ function App() {
   let ldata;
 
   const StorageHandler = (data) => {
-    ldata = {PhoneNo: data.PhoneNo, Password: data.Password, thisid: data._id}
+    ldata = { PhoneNo: data.PhoneNo, Password: data.Password, thisid: data._id }
     localStorage.setItem('Data', JSON.stringify(ldata))
   }
 
@@ -25,7 +26,7 @@ function App() {
   const [UserData, SetUserData] = useState()
 
   useEffect(() => {
-    if(LoginData) {
+    if (LoginData) {
       setLogin(true)
       const user = JSON.parse(LoginData);
       setid(user.thisid);
@@ -48,18 +49,24 @@ function App() {
       setid(data)
     }, [])
 
-    const UserDataHandler = useCallback(
-      (data) => {
-        SetUserData(data)
-      }, [])
+  const UserDataHandler = useCallback(
+    (data) => {
+      SetUserData(data)
+    }, [])
 
   return (
     <AuthContext.Provider value={{ isLoggedIn: Login, login: login, logout: logout, UserId: id, IdHandler: IdHandler, UserDataHandler: UserDataHandler, UserData: UserData }}>
       <Router>
         <Header />
-        {!Login && <Route path="/Auth" exact>
-          <LoginPage StorageHandler={StorageHandler}/>
-        </Route>}
+        {!Login &&
+          <>
+            <Route path="/Auth" exact>
+              <LoginPage StorageHandler={StorageHandler} />
+            </Route>
+            <Route path="/Forget" exact>
+              <ForgetPage />
+            </Route>
+          </>}
         {!Login && <Route path="/" exact><HomePage /></Route>}
         <Redirect to="/" />
       </Router>

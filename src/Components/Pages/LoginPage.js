@@ -1,4 +1,5 @@
 import { React, useState, useContext, useEffect } from 'react'
+import { Link } from 'react-router-dom';
 
 import './LoginPage.css';
 import ErrorModal from '../ErrorModal/ErrorModal';
@@ -57,13 +58,11 @@ function LoginPage(Probs) {
         })
 
         const userdata = await response.json()
-        console.log(userdata)
         if (response.ok) {
             if (userdata === undefined) {
                 SetErrorContent(userdata.Message);
                 return SetError(true);
             } else {
-                console.log(userdata);
                 Probs.StorageHandler(userdata);
                 Auth.IdHandler(userdata._id);
                 Auth.UserDataHandler(userdata);
@@ -172,7 +171,9 @@ function LoginPage(Probs) {
                                 <input value={PhoneNo} onChange={Phonehandler} type="number" placeholder='Enter Your Number'></input>
                                 <label>Password</label>
                                 <input value={Password} onChange={PasswordHandler} type="Password" placeholder='Enter Your Password'></input>
-                                <button onClick={SignInHandler} type='submit'>SignIn</button></>}
+                                <button onClick={SignInHandler} type='submit'>SignIn</button>
+                                <Link to="/Forget" >Forget Password??</Link>
+                                </>}
                             <button onClick={ModeHandler}>{content}</button>
                         </form>
                     </div>
