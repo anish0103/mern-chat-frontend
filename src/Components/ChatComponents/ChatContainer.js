@@ -12,8 +12,6 @@ const backend = process.env.REACT_APP_BACKEND_URL
 
 function ChatContainer(Probs) {
 
-    console.log("Chat Container Running!!")
-
     useEffect(() => {
         socket = io(backend)
     }, [])
@@ -43,9 +41,8 @@ function ChatContainer(Probs) {
 
     const GetUsers = useCallback(
         async () => {
-            fetch(process.env.REACT_APP_BACKEND_URL + '/api/users/').then((response) => response.json()).then((data)=> {
-                const UserData = data.filter((data) => data._id === Auth.UserId)
-                Auth.UserDataHandler(UserData[0]);
+            fetch(process.env.REACT_APP_BACKEND_URL + `/api/users/${Auth.UserId}`).then((response) => response.json()).then((data)=> {
+                Auth.UserDataHandler(data);
                 Timer = setInterval(ScrollerHandler, 100);
             })
         }, [])
@@ -112,7 +109,7 @@ function ChatContainer(Probs) {
             <ErrorModal visible={Error} title={'Error'} content={ErrorContent} ModalHandler={ModalHandler} />
             <div className='chatcontainer-maincontainer'>
                 <div className='chatcontainer-nameuser'>
-                    <div className="chatcontainer-profile"><a href={process.env.REACT_APP_BACKEND_URL + `/uploads/${UserData[0].Image}`} target="_blank"><img src={process.env.REACT_APP_BACKEND_URL + `/uploads/${UserData[0].Image}`} onError={(e)=>{e.target.onerror = null; e.target.src="https://anish-mern-chat-application.herokuapp.com/uploads/1234567893--icons8-user-100.png"}} /></a></div>
+                    <div className="chatcontainer-profile"><img src={UserData[0].Image} /></div>
                     <h3>{UserData[0].Name}</h3>
                 </div>
                 <div id='chatbox' className='chatcontainer-chatarea'>

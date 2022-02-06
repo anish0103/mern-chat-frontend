@@ -1,5 +1,6 @@
 import { React, useState, useContext, useEffect } from 'react'
 import { Link } from 'react-router-dom';
+import FileBase from "react-file-base64";
 
 import './LoginPage.css';
 import ErrorModal from '../ErrorModal/ErrorModal';
@@ -38,23 +39,18 @@ function LoginPage(Probs) {
     const PasswordHandler = (e) => {
         SetPassword(e.target.value)
     }
-    const FileHandler = (e) => {
-        SetImage(e.target.files[0])
-    }
     const Emailhandler = (e) => {
         SetEmail(e.target.value)
     }
 
     const SignUpFunction = async () => {
-        const data = new FormData();
-        data.append("Name", Name)
-        data.append("PhoneNo", PhoneNo)
-        data.append("Password", Password)
-        data.append("Image", Image)
-        data.append("EmailId", Email)
+        const data = { Name: Name, PhoneNo: PhoneNo, Password: Password, Image: Image.base64, EmailId: Email };
         const response = await fetch(process.env.REACT_APP_BACKEND_URL + '/api/users/signup/', {
             method: 'POST',
-            body: data,
+            body: JSON.stringify(data),
+            headers: {
+                'Content-Type': 'application/json'
+            },
         })
 
         const userdata = await response.json()
@@ -165,7 +161,12 @@ function LoginPage(Probs) {
                                 <label>Password</label>
                                 <input value={Password} onChange={PasswordHandler} type="Password" placeholder='Enter Your Password'></input>
                                 <label>Profile Photo</label>
-                                <input type="file" onChange={FileHandler} name="image" />
+                                <FileBase
+                                    type="file"
+                                    name="File"
+                                    multiple={false}
+                                    onDone={({ base64 }) => SetImage({ base64 })}
+                                />
                                 <button onClick={SignUpHandler} type='submit'>SignUp</button></>}
                             {!Mode && <><label>Phone No.</label>
                                 <input value={PhoneNo} onChange={Phonehandler} type="number" placeholder='Enter Your Number'></input>
@@ -173,7 +174,7 @@ function LoginPage(Probs) {
                                 <input value={Password} onChange={PasswordHandler} type="Password" placeholder='Enter Your Password'></input>
                                 <button onClick={SignInHandler} type='submit'>SignIn</button>
                                 <Link to="/Forget" >Forget Password??</Link>
-                                </>}
+                            </>}
                             <button onClick={ModeHandler}>{content}</button>
                         </form>
                     </div>
