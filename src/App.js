@@ -24,6 +24,7 @@ function App() {
   const [Login, setLogin] = useState(false)
   const [id, setid] = useState('')
   const [UserData, SetUserData] = useState()
+  const [UserMessage, SetUserMessage] = useState();
 
   useEffect(() => {
     if (LoginData) {
@@ -54,8 +55,13 @@ function App() {
       SetUserData(data)
     }, [])
 
+  const MessageHandler = useCallback(
+    (data) => {
+      SetUserMessage(data)
+    }, [])
+
   return (
-    <AuthContext.Provider value={{ isLoggedIn: Login, login: login, logout: logout, UserId: id, IdHandler: IdHandler, UserDataHandler: UserDataHandler, UserData: UserData }}>
+    <AuthContext.Provider value={{ isLoggedIn: Login, login: login, logout: logout, UserId: id, IdHandler: IdHandler, UserDataHandler: UserDataHandler, UserData: UserData, MessageHandler: MessageHandler, Messages: UserMessage }}>
       <Router>
         <Header />
         {!Login &&

@@ -23,7 +23,7 @@ function Header() {
     return (
         <div className='header-maincontainer'>
             <div className='header-projectname'>
-                <h2>Project Name</h2>
+                <h2>Chat Application</h2>
             </div>
             <div className='header-button'>
                 {!Auth.isLoggedIn && <NavLink to="/Auth">{buttontext}</NavLink>}

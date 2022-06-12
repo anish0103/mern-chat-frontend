@@ -19,11 +19,11 @@ function LoginPage(Probs) {
     const [Mode, setMode] = useState(false)
     const [Error, SetError] = useState(false)
     const [ErrorContent, SetErrorContent] = useState();
-    const [Users, SetUsers] = useState('')
+    const [Users, SetUsers] = useState([])
 
     useEffect(() => {
         const GetUsers = async () => {
-            const response = await fetch(process.env.REACT_APP_BACKEND_URL + '/api/users/')
+            const response = await fetch(process.env.REACT_APP_BACKEND_URL + '/api/users/withoutphoto')
             const data = await response.json()
             SetUsers(data);
         }
@@ -167,6 +167,7 @@ function LoginPage(Probs) {
                                     multiple={false}
                                     onDone={({ base64 }) => SetImage({ base64 })}
                                 />
+                                <small>*Please select photo below 100kb*</small>
                                 <button onClick={SignUpHandler} type='submit'>SignUp</button></>}
                             {!Mode && <><label>Phone No.</label>
                                 <input value={PhoneNo} onChange={Phonehandler} type="number" placeholder='Enter Your Number'></input>

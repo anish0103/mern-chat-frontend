@@ -26,6 +26,9 @@ function ChatContainer(Probs) {
     let params = useParams();
     const FriendList = Auth.UserData.Friend;
     const UserData = FriendList.filter((data) => data.id === params.params)
+    if(Auth.Messages === undefined) {
+        Auth.Messages = UserData[0].Messages;
+    }
 
     let Timer;
     const StopScroller = () => {
@@ -41,8 +44,8 @@ function ChatContainer(Probs) {
 
     const GetUsers = useCallback(
         async () => {
-            fetch(process.env.REACT_APP_BACKEND_URL + `/api/users/${Auth.UserId}`).then((response) => response.json()).then((data)=> {
-                Auth.UserDataHandler(data);
+            fetch(process.env.REACT_APP_BACKEND_URL + `/api/users/${Auth.UserId}/${params.params}`).then((response) => response.json()).then((data) => {
+                Auth.MessageHandler(data);
                 Timer = setInterval(ScrollerHandler, 100);
             })
         }, [])
@@ -59,7 +62,7 @@ function ChatContainer(Probs) {
         let elem = document.getElementById('chatbox');
         let CurrentHeight = elem.scrollHeight;
         let TotalHeight = elem.offsetHeight;
-        if(CurrentHeight === TotalHeight) {
+        if (CurrentHeight === TotalHeight) {
             SetDown(false)
         }
     }, [])
@@ -80,7 +83,7 @@ function ChatContainer(Probs) {
 
         const userdata = await response.json()
         setinputvalue('')
-        Auth.UserDataHandler(userdata);
+        Auth.MessageHandler(userdata)
         Timer = setInterval(ScrollerHandler, 100);
         socket.emit('sendmessage', data)
     }
@@ -113,11 +116,11 @@ function ChatContainer(Probs) {
                     <h3>{UserData[0].Name}</h3>
                 </div>
                 <div id='chatbox' className='chatcontainer-chatarea'>
-                     {Down && <div className='chatcontainer-downbutton'>
-                        <img onClick={DownButtonHandler} src={DownButton} alt="Down Arrow"/>
+                    {Down && <div className='chatcontainer-downbutton'>
+                        <img onClick={DownButtonHandler} src={DownButton} alt="Down Arrow" />
                     </div>}
                     <ul>
-                        {UserData[0].Messages.map((data, index) => {
+                        {Auth.Messages.map((data, index) => {
                             if (data.From !== params.params) {
                                 return <div key={index} className='msgcontainer'><li className='sender'>{data.Msg}</li></div>
                             } else {

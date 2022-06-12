@@ -7,5 +7,7 @@ export const AuthContext = createContext({
     IdHandler: () => {},
     UserId: '',
     UserData: '',
+    Messages: '',
+    MessageHandler: ()=>{},
     UserDataHandler: ()=>{}
 }); 

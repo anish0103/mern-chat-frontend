@@ -15,7 +15,7 @@ function UserList(Probs) {
 
     useEffect(() => {
         const GetUsers = async () => {
-            const response = await fetch(process.env.REACT_APP_BACKEND_URL + '/api/users/')
+            const response = await fetch(process.env.REACT_APP_BACKEND_URL + '/api/users/withoutphoto')
             const data = await response.json()
             SetUsers(data);
         }
@@ -34,7 +34,6 @@ function UserList(Probs) {
 
     if (Auth.UserData === undefined) {
         UserInfo();
-        console.log(process.env.REACT_APP_BACKEND_URL);
     } else {
         FriendList = Auth.UserData.Friend;
     }
@@ -57,12 +56,11 @@ function UserList(Probs) {
 
     const AddFriendHandler = (e) => {
         e.preventDefault();
-        const test = Users.filter((data) => data.PhoneNo === PhoneNo);
+        const test = Users.filter((data) => Number(data.PhoneNo) === Number(PhoneNo));
         if (test.length === 0) {
             SetErrorContent(`The user you want to add don't have account in this Application. If You want to talk tell him/her to SignUp`);
             return SetError(true);
         }
-        console.log(test)
         const NewFriend = { id: test[0]._id, Userid: Auth.UserId };
         AddFriendFunction(NewFriend);
         SetPhoneNo('')
