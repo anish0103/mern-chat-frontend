@@ -26,9 +26,25 @@ function ChatContainer(Probs) {
     let params = useParams();
     const FriendList = Auth.UserData.Friend;
     const UserData = FriendList.filter((data) => data.id === params.params)
-    if(Auth.Messages === undefined) {
-        Auth.Messages = UserData[0].Messages;
+
+    const GetUsers = useCallback(
+        async () => {
+            Auth.Messages = [];
+            fetch(process.env.REACT_APP_BACKEND_URL + `/api/users/${Auth.UserId}/${params.params}`).then((response) => response.json()).then((data) => {
+                Auth.MessageHandler(data);
+                Timer = setInterval(ScrollerHandler, 100);
+            })
+        }, [])
+
+    if (Auth.Messages === undefined) {
+        Auth.Messages = [];
+        GetUsers();
     }
+    
+    useEffect(() => {
+        Auth.Messages = [];
+        GetUsers();
+    }, [params.params])
 
     let Timer;
     const StopScroller = () => {
@@ -41,14 +57,6 @@ function ChatContainer(Probs) {
         elem.scrollTo(0, testing)
         StopScroller();
     }
-
-    const GetUsers = useCallback(
-        async () => {
-            fetch(process.env.REACT_APP_BACKEND_URL + `/api/users/${Auth.UserId}/${params.params}`).then((response) => response.json()).then((data) => {
-                Auth.MessageHandler(data);
-                Timer = setInterval(ScrollerHandler, 100);
-            })
-        }, [])
 
     useEffect(() => {
         if (socket) {
@@ -86,7 +94,7 @@ function ChatContainer(Probs) {
         Timer = setInterval(ScrollerHandler, 100);
         socket.emit('sendmessage', data)
     }
-    
+
     const SubmitHandler = (e) => {
         e.preventDefault();
         //Input Data
@@ -116,9 +124,9 @@ function ChatContainer(Probs) {
                     <h3>{UserData[0].Name}</h3>
                 </div>
                 <div id='chatbox' className='chatcontainer-chatarea'>
-                    {Down && <div className='chatcontainer-downbutton'>
+                    {/* {Down && <div className='chatcontainer-downbutton'>
                         <img onClick={DownButtonHandler} src={DownButton} alt="Down Arrow" />
-                    </div>}
+                    </div>} */}
                     <ul>
                         {Auth.Messages.map((data, index) => {
                             if (data.From !== params.params) {
