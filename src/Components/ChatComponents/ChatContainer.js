@@ -82,12 +82,11 @@ function ChatContainer(Probs) {
         })
 
         const userdata = await response.json()
-        setinputvalue('')
         Auth.MessageHandler(userdata)
         Timer = setInterval(ScrollerHandler, 100);
         socket.emit('sendmessage', data)
     }
-
+    
     const SubmitHandler = (e) => {
         e.preventDefault();
         //Input Data
@@ -96,6 +95,7 @@ function ChatContainer(Probs) {
             return SetError(true);
         }
         const InputData = { To: params.params, From: userid, Msg: inputvalue }
+        setinputvalue('')
         AddMessage(InputData)
     }
 
