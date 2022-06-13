@@ -38,13 +38,13 @@ function ChatContainer(Probs) {
 
     if (Auth.Messages === undefined) {
         Auth.Messages = [];
-        GetUsers();
     }
-    
+
     useEffect(() => {
         Auth.Messages = [];
+        console.log("UseEffect")
         GetUsers();
-    }, [params.params])
+    }, [])
 
     let Timer;
     const StopScroller = () => {
@@ -60,11 +60,17 @@ function ChatContainer(Probs) {
 
     useEffect(() => {
         if (socket) {
+            socket.on('connect', () => {
+                console.log(socket.id)
+                socket.emit('userdetails', { user: Auth.UserId, id: socket.id })
+            });
             socket.on('resmessage', (data) => {
-                GetUsers();
+                if (Auth.UserId === data.To && params.params === data.From) {
+                    GetUsers();
+                }
             })
         }
-    }, [GetUsers])
+    }, [])
 
     useEffect(() => {
         let elem = document.getElementById('chatbox');
@@ -124,9 +130,9 @@ function ChatContainer(Probs) {
                     <h3>{UserData[0].Name}</h3>
                 </div>
                 <div id='chatbox' className='chatcontainer-chatarea'>
-                    {/* {Down && <div className='chatcontainer-downbutton'>
+                    {Down && <div className='chatcontainer-downbutton'>
                         <img onClick={DownButtonHandler} src={DownButton} alt="Down Arrow" />
-                    </div>} */}
+                    </div>}
                     <ul>
                         {Auth.Messages.map((data, index) => {
                             if (data.From !== params.params) {

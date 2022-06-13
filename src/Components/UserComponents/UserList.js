@@ -67,6 +67,13 @@ function UserList(Probs) {
         Setaddform(false);
     }
 
+    const GetMessages = async (userid, friendid) => {
+        Auth.Messages = [];
+        fetch(process.env.REACT_APP_BACKEND_URL + `/api/users/${userid}/${friendid}`).then((response) => response.json()).then((data) => {
+            Auth.MessageHandler(data);
+        })
+    }
+
     const AddFriendform = () => {
         if (Addform) {
             Setaddform(false)
@@ -104,7 +111,7 @@ function UserList(Probs) {
                     </div>}
                 </div>
                 <div className='userlist-list'>
-                    {FriendList.map((data) => (<NavLink to={{ pathname: `/home/${data.id}`, data: data }} activeClassName='active' key={data.id}><div className="userlist-user"><div className="userlist-profile"><img src={data.Image} /></div><div className="userlist-name">{data.Name}</div></div></NavLink>))}
+                    {FriendList.map((data) => (<NavLink to={{ pathname: `/home/${data.id}`, data: data }} onClick={() => GetMessages(Auth.UserId, data.id)} activeClassName='active' key={data.id}><div className="userlist-user"><div className="userlist-profile"><img src={data.Image} /></div><div className="userlist-name">{data.Name}</div></div></NavLink>))}
                 </div>
             </div>
         </>
