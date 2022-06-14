@@ -1,129 +1,155 @@
 .chatcontainer-maincontainer {
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-    position: relative;
-    height: 93vh;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  position: relative;
+  transition: 0.4s;
+  height: 93vh;
 }
 
 .chatcontainer-nameuser {
-    height: 5%;
-    padding: 12px;
-    display: flex;
-    align-items: center;
+  height: 5%;
+  padding: 12px;
+  display: flex;
+  align-items: center;
 }
 
 .chatcontainer-profile {
-    width: 45px;
-    border-radius: 100px;
-    height: 45px;
-    overflow: hidden;
-    margin-right: 1.5%;
+  width: 45px;
+  border-radius: 100px;
+  height: 45px;
+  overflow: hidden;
+  margin-right: 1.5%;
 }
 
 .chatcontainer-profile img {
-    height: 100%;
-    width: 100%;
+  height: 100%;
+  width: 100%;
 }
 
 .chatcontainer-chatarea {
-    height: 90%;
-    padding: 12px;
-    overflow-y: scroll;
-    background-color: #feffff;
-    box-shadow: inset 0px 0px 8px 5px #e1e4e5;
-    border-radius: 5px;
+  height: 90%;
+  padding: 12px;
+  overflow-y: scroll;
+  background-color: #feffff;
+  box-shadow: inset 0px 0px 8px 5px #e1e4e5;
+  border-radius: 5px;
+  overflow-x: hidden;
 }
 
 .chatcontainer-downbutton {
-    position: absolute;
-    right: 1.5%;
-    bottom: 10%;
-    height: 40px;
-    width: 40px;
-    cursor: pointer;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border-radius: 100px;
-    overflow: hidden;
-    backdrop-filter: blur(8px);
+  position: absolute;
+  right: 1.5%;
+  bottom: 10%;
+  height: 40px;
+  width: 40px;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 100px;
+  overflow: hidden;
+  backdrop-filter: blur(8px);
 }
 
 .chatcontainer-downbutton img {
-    width: 100%;
-    height: 100%;
+  width: 100%;
+  height: 100%;
 }
 
 .chatcontainer-message {
-    height: 5%;
-    padding: 12px;
-    display: flex;
-    align-items: center;
-    background-color: #feffff;
+  height: 5%;
+  padding: 12px;
+  display: flex;
+  align-items: center;
+  background-color: #feffff;
 }
 
 .chatcontainer-chatarea ul {
-    width: 100%;
-    list-style: none;
-    display: flex;
-    flex-direction: column;
+  width: 100%;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
 }
 
 .chatcontainer-chatarea li {
-    width: fit-content;
-   color: white;
-   padding: 8px;
-   margin: 5px;
-   border-radius: 5px;
+  width: fit-content;
+  color: white;
+  padding: 8px;
+  margin: 5px;
+  border-radius: 5px;
 }
 
 .sendmessage-container {
-    width: 90%;
-    display: flex;
-    justify-content: center;
+  width: 90%;
+  display: flex;
+  justify-content: center;
 }
 
 .sendmessage-container input {
-    width: 90%;
-    padding: 12px;
-    outline: none;
-    border: 2px solid #e1e4e5;
-    background-color: #f7fbfc;
-    border-radius: 5px;
-    font-size: 15px;
+  width: 90%;
+  padding: 12px;
+  outline: none;
+  border: 2px solid #e1e4e5;
+  background-color: #f7fbfc;
+  border-radius: 5px;
+  font-size: 15px;
 }
 
 .sendbutton-container {
-    width: 10%;
-    display: flex;
-    justify-content: center;
+  width: 10%;
+  display: flex;
+  justify-content: center;
 }
 
 .sendbutton-container button {
-    font-size: 14px;
-    border-radius: 7px;
-    background-image: linear-gradient(90deg ,#714eef, #c466ff);
-    color: white;
-    font-weight: bold;
-    padding: 10px;
-    width: 80%;
-    outline: none;
-    border: none;
-    cursor: pointer;
+  font-size: 14px;
+  border-radius: 7px;
+  background-image: linear-gradient(90deg, #714eef, #c466ff);
+  color: white;
+  font-weight: bold;
+  padding: 10px;
+  width: 80%;
+  outline: none;
+  border: none;
+  cursor: pointer;
 }
 
 .sender {
-    float: right;
-    background-image: linear-gradient(90deg ,#714eef, #c466ff);
+  float: right;
+  animation: fadeRightAnimation 0.5s;
+  background-image: linear-gradient(90deg, #714eef, #c466ff);
 }
 
 .receiver {
-    float: left;
-    background-color: #e6eef8;
-    color: black !important;
+  float: left;
+  background-color: #e6eef8;
+  animation: fadeLeftAnimation 0.5s;
+  color: black !important;
+}
+
+@keyframes fadeRightAnimation {
+  0% {
+    opacity: 0;
+    transform: translateX(40px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0px);
+  }
+}
+
+@keyframes fadeLeftAnimation {
+  0% {
+    opacity: 0;
+    transform: translateX(-40px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0px);
+  }
 }
 
 .msgcontainer {
-    width: 100%;
+  width: 100%;
 }

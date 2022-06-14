@@ -20,8 +20,10 @@ function ChatContainer(Probs) {
     const [inputvalue, setinputvalue] = useState('')
     const [Error, SetError] = useState(false)
     const [Down, SetDown] = useState(true)
+    const [Typing, SetTyping] = useState(false)
     const [ErrorContent, SetErrorContent] = useState();
 
+    let Temp;
     let userid = Auth.UserId;
     let params = useParams();
     const FriendList = Auth.UserData.Friend;
@@ -42,7 +44,6 @@ function ChatContainer(Probs) {
 
     useEffect(() => {
         Auth.Messages = [];
-        console.log("UseEffect")
         GetUsers();
     }, [])
 
@@ -51,17 +52,30 @@ function ChatContainer(Probs) {
         clearTimeout(Timer);
     }
 
+    const StopTyping = () => {
+        SetTyping(false)
+        clearTimeout(Temp);
+    }
+
     const ScrollerHandler = () => {
         let elem = document.getElementById('chatbox');
         let testing = elem.offsetHeight + 100000000;
-        elem.scrollTo(0, testing)
+        elem.scrollTo(0, testing);
         StopScroller();
+    }
+
+    if (Typing) {
+        Timer = setInterval(ScrollerHandler, 100);
+        Temp = setTimeout(StopTyping, 2000);
+    }
+
+    const TypingHandler = () => {
+        SetTyping(true)
     }
 
     useEffect(() => {
         if (socket) {
             socket.on('connect', () => {
-                console.log(socket.id)
                 socket.emit('userdetails', { user: Auth.UserId, id: socket.id })
             });
             socket.on('resmessage', (data) => {
@@ -69,6 +83,11 @@ function ChatContainer(Probs) {
                     GetUsers();
                 }
             })
+            socket.on('typing', (data) => {
+                if (Auth.UserId === data.To && params.params === data.From) {
+                    TypingHandler();
+                }
+            });
         }
     }, [])
 
@@ -115,6 +134,7 @@ function ChatContainer(Probs) {
 
     const InputHandler = (e) => {
         setinputvalue(e.target.value)
+        socket.emit('typing', { To: params.params, From: Auth.UserId });
     }
 
     const ModalHandler = () => {
@@ -141,6 +161,7 @@ function ChatContainer(Probs) {
                                 return <div key={index} className='msgcontainer'><li className='receiver'>{data.Msg}</li></div>
                             }
                         })}
+                        {Typing && <div className='msgcontainer'><li className='receiver'>Typing...</li></div>}
                     </ul>
                 </div>
                 <form className='chatcontainer-message'>
