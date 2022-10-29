@@ -111,6 +111,7 @@ function ChatContainer(Probs) {
             body: JSON.stringify(data),
             headers: {
                 'Content-Type': 'application/json',
+                'Access-Control-Allow-Origin': '*'
             }
         })
 

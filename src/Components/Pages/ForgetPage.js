@@ -42,6 +42,7 @@ const ForgetPage = () => {
             body: JSON.stringify(data),
             headers: {
                 'Content-Type': 'application/json',
+                'Access-Control-Allow-Origin': '*'
             }
         })
 
@@ -64,6 +65,7 @@ const ForgetPage = () => {
             body: JSON.stringify(data),
             headers: {
                 'Content-Type': 'application/json',
+                'Access-Control-Allow-Origin': '*'
             }
         })
 
